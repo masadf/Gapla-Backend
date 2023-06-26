@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wox-gapla-config
+  namespace: default
+data:
+  DB_HOST: "185.215.187.9"
+  DB_PASSWORD: "wox_academy"
+  DB_NAME: "gapla"
+  DB_USERNAME: "postgres"
+  DB_PORT: "5432"

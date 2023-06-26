@@ -1,0 +1,30 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
+        <server>
+            <id>maven-group</id>
+            <username>admin</username>
+            <password>w068144279W</password>
+        </server>
+        <server>
+            <id>nexus-snapshots</id>
+            <username>admin</username>
+            <password>w068144279W</password>
+        </server>
+        <server>
+            <id>nexus-releases</id>
+            <username>admin</username>
+            <password>w068144279W</password>
+        </server>
+    </servers>
+
+    <mirrors>
+        <mirror>
+            <id>maven-group</id>
+            <name>maven-group</name>
+            <url>http://185.215.187.9:32003/repository/maven-public/</url>
+            <mirrorOf>maven-group</mirrorOf>
+        </mirror>
+    </mirrors>
+</settings>
