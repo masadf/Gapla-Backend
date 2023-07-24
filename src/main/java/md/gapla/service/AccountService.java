@@ -11,11 +11,14 @@ import md.gapla.model.dto.account.AccountExamCheckLevelDto;
 import md.gapla.model.dto.auth.RegisterExtendedRequest;
 import md.gapla.model.dto.view.AccountViewDto;
 import md.gapla.model.entity.account.AccountEntity;
+import md.gapla.model.entity.forum.ForumQuestionsEntity;
 import md.gapla.model.input.AccountUpdateInput;
 import md.gapla.model.input.ExamResultInput;
 import md.kobalt.security.auth.AuthenticationRequest;
 import md.kobalt.security.auth.AuthenticationResponse;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface AccountService {
 
@@ -38,4 +41,9 @@ public interface AccountService {
 
     AccountCheckLevelDto setResults(AccountCheckLevelDto input);
     AccountExamCheckLevelDto setExamResults(ExamResultInput input);
-}
+    
+    void addBookmarkToAccount(Long accountId, Long questionId);
+    
+    List<ForumQuestionsEntity> getQuestionsByUser(Long accountId);
+    
+    }

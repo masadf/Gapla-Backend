@@ -7,7 +7,9 @@ import md.gapla.model.enums.ObjectStatusEnum;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "forumquestions", schema = "public")
@@ -30,7 +32,7 @@ public class ForumQuestionsEntity {
     private String forumQuestionContent;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountid", referencedColumnName = "accountid")
     private AccountEntity account;
 
@@ -41,4 +43,8 @@ public class ForumQuestionsEntity {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private ObjectStatusEnum status;
+    
+    @ManyToMany(mappedBy = "bookmarked_question")
+    private List<AccountEntity> accountsBookmarked = new ArrayList<>(); //What accounts have bookmarked this question.
+    
 }

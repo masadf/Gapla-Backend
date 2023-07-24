@@ -12,6 +12,7 @@ import md.gapla.model.enums.ObjectStatusEnum;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,5 +55,8 @@ public class ExamEntity {
             }
     )
     private List<CourseEntity> courses = new ArrayList<>();
+    
+    @Column(name = "creationdate")
+    private LocalDateTime creationDate;
 
 }

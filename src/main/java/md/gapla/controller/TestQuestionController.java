@@ -30,7 +30,12 @@ public class TestQuestionController {
                                                                      @RequestBody PageParamDto pageParamDto) {
         return ResponseEntity.ok(testQuestionService.getTestQuestionList(languageCode, pageParamDto));
     }
-
+    
+    @GetMapping(value = "/{testQuestionTypeId}")
+    public ResponseEntity<TestQuestionDto> getTestQuestion(@PathVariable("testQuestionTypeId") Long testQuestionTypeId){
+        return ResponseEntity.ok(testQuestionService.getTestQuestion(testQuestionTypeId));
+    }
+    
     @PostMapping(value = "/{testQuestionTypeId}")
     public ResponseEntity<TestQuestionDto> addTestQuestion(@PathVariable("testQuestionTypeId") Long testQuestionTypeId,
                                                            @RequestBody TestQuestionInput testQuestionInput) {

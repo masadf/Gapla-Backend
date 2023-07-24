@@ -6,6 +6,7 @@ import md.gapla.model.dto.common.*;
 import md.gapla.model.dto.course.CourseDetailsDto;
 import md.gapla.model.dto.course.CourseDto;
 import md.gapla.model.dto.course.CourseShortDto;
+import md.gapla.model.dto.courseexam.ExamDto;
 import md.gapla.model.dto.courseexam.ExamQuestionTaskTextDto;
 import md.gapla.model.dto.courseexam.ExamTaskDto;
 import md.gapla.model.dto.forum.*;
@@ -22,6 +23,7 @@ import md.gapla.model.entity.account.*;
 import md.gapla.model.entity.common.*;
 import md.gapla.model.entity.course.CourseDetailsEntity;
 import md.gapla.model.entity.course.CourseEntity;
+import md.gapla.model.entity.courseexam.ExamEntity;
 import md.gapla.model.entity.courseexam.ExamQuestionTaskTextEntity;
 import md.gapla.model.entity.courseexam.ExamTaskEntity;
 import md.gapla.model.entity.forum.*;
@@ -209,6 +211,7 @@ public interface AppMapper {
     TestAnswerEntity map(TestAnswerDto obj);
 
     @Mapping(target = "testTimeTypeId", source = "testTimeType.testTimeTypeId")
+    @Mapping(target = "questionsQuantity", expression = "java(obj.getQuestions().size())")
     TestDto map(TestEntity obj);
 
     TestEntity map(TestDto obj);

@@ -3,6 +3,7 @@ package md.gapla.controller;
 import lombok.AllArgsConstructor;
 import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.lessons.LessonDto;
+import md.gapla.model.entity.lessons.LessonEntity;
 import md.gapla.model.input.lesson.LessonInput;
 import md.gapla.service.LessonService;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +45,11 @@ public class LessonController {
     @GetMapping(value = "/{lessonId}")
     public ResponseEntity<LessonDto> getLessonById(@PathVariable("lessonId") Long lessonId) {
         return ResponseEntity.ok(  lessonService.getLessonById(lessonId));
+    }
+    
+    //7.2
+    @GetMapping(value = "/courseLessons/{courseId}")
+    public ResponseEntity<List<LessonEntity>> getCourseLessonsById(@PathVariable("courseId") Long courseId){
+        return ResponseEntity.ok(lessonService.getLessonByCourseId(courseId));
     }
 }

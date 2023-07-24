@@ -18,4 +18,7 @@ public interface TestQuestionService {
     List<TestQuestionDto> getTestQuestionList(String languageCode, PageParamDto pageParamDto);
 
     void deleteTestQuestionByTestQuestionId(Long testQuestionId);
-}
+    
+    TestQuestionDto getTestQuestion(Long testQuestionTypeId);
+    
+    }

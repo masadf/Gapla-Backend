@@ -6,12 +6,15 @@ import md.gapla.model.dto.account.AccountCheckLevelDto;
 import md.gapla.model.dto.account.AccountDto;
 import md.gapla.model.dto.account.AccountExamCheckLevelDto;
 import md.gapla.model.dto.view.AccountViewDto;
+import md.gapla.model.entity.forum.ForumQuestionsEntity;
 import md.gapla.model.input.AccountUpdateInput;
 import md.gapla.model.input.ExamResultInput;
 import md.gapla.service.AccountService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController(value = "account")
 //@OpenAPIDefinition(
@@ -25,7 +28,7 @@ public class AccountController {
 
     //    @Operation(description = "Get all accounts from organisation", tags = {"Account"})
     @PostMapping(value = "/list")
-    public ResponseEntity<Page<AccountDto>> getAccountsList(@RequestBody PageParamDto pageParamDto) {
+    public ResponseEntity<Page<AccountDto>> getAccountsList(@RequestBody PageParamDto pageParamDto) {//
         return ResponseEntity.ok(accountService.accountsList(pageParamDto));
     }
 
@@ -70,5 +73,18 @@ public class AccountController {
     @PostMapping(value = "/exam/set-result")
     public ResponseEntity<AccountExamCheckLevelDto> setExamResult(@RequestBody ExamResultInput input) {
         return ResponseEntity.ok(accountService.setExamResults(input));
+    }
+    
+    @PostMapping("/{accountId}/bookmarks/{questionId}")
+    public ResponseEntity<String> addBookmarkToAccount(@PathVariable Long accountId,
+                                                       @PathVariable Long questionId){
+        accountService.addBookmarkToAccount(accountId, questionId);
+        return ResponseEntity.ok("Bookmark added successfully.");
+    }
+    
+    @PostMapping("/{accountId}/questions")
+    public ResponseEntity<List<ForumQuestionsEntity>> getQuestionsByUser(@PathVariable Long accountId){
+        List<ForumQuestionsEntity> questions = accountService.getQuestionsByUser(accountId);
+        return ResponseEntity.ok(questions);
     }
 }

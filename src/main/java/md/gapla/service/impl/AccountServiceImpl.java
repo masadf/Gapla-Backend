@@ -14,6 +14,7 @@ import md.gapla.model.entity.account.AccountCheckLevelEntity;
 import md.gapla.model.entity.account.AccountEntity;
 import md.gapla.model.entity.account.AccountRoleEntity;
 import md.gapla.model.entity.courseexam.CourseExamEntity;
+import md.gapla.model.entity.forum.ForumQuestionsEntity;
 import md.gapla.model.entity.view.AccountViewEntity;
 import md.gapla.model.enums.AccountRoleEnum;
 import md.gapla.model.enums.ObjectStatusEnum;
@@ -23,6 +24,7 @@ import md.gapla.repository.account.AccountCheckLevelRepository;
 import md.gapla.repository.account.AccountRepository;
 import md.gapla.repository.account.AccountRoleRepository;
 import md.gapla.repository.course.CourseExamRepository;
+import md.gapla.repository.forum.ForumQuestionsRepository;
 import md.gapla.repository.specification.filters.AccountViewSpec;
 import md.gapla.repository.specification.filters.FilterCriteria;
 import md.gapla.repository.view.AccountViewRepository;
@@ -65,6 +67,8 @@ public class AccountServiceImpl implements AccountService {
     private final AccountViewRepository accountViewRepository;
 
     private final CourseExamRepository courseExamRepository;
+    
+    private final ForumQuestionsRepository forumQuestionsRepository;
 //    private final AccountRoleRepository accountRoleRepository;
 //    private final AccountCourseProgressRepository accountCourseProgressRepository;
 //    private final AccountCourseLessonProgressEntity accountCourseLessonProgressEntity;
@@ -292,6 +296,23 @@ public class AccountServiceImpl implements AccountService {
         AccountExamCheckLevelDto accountCheckLevelDto = appMapper.mapToExam(accountCheckLevelEntity);
         accountCheckLevelDto.setEmail(accountEntity.getEmail());
         return accountCheckLevelDto;
+    }
+    
+    @Override
+    public void addBookmarkToAccount(Long accountId, Long questionId){
+        AccountEntity account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new EntityNotFoundException("Account with id = " + accountId + " not found"));
+        ForumQuestionsEntity question = forumQuestionsRepository.findById(questionId)
+                .orElseThrow(() -> new EntityNotFoundException("Question with id = " + questionId + " not found"));
+        account.getBookmarkedQuestions().add(question);
+        accountRepository.save(account);
+    }
+    
+    
+    public List<ForumQuestionsEntity> getQuestionsByUser(Long accountId) {
+        AccountEntity account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new EntityNotFoundException("Account with id " + accountId + " not found"));
+        return account.getQuestions();
     }
 
     private Map<String, String> isEmptyParams(Map<String, String> params) {

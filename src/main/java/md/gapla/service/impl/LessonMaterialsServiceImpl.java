@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -139,5 +140,12 @@ public class LessonMaterialsServiceImpl implements LessonMaterialsService {
         LessonMaterialsTypeEntity lessonMaterialsType = lessonMaterialsTypeRepository.findById(input.getLessonMaterialsTypeId()).orElseThrow(() -> new EntityNotFoundException(""));
         lessonMaterialsEntity.setLessonMaterialsType(lessonMaterialsType);
         return lessonMaterialsEntity;
+    }
+    
+    //Or lessonMaterialsDto?
+    public List<LessonMaterialsEntity> getLessonMaterialsByLessonId(Long lessonId){
+        LessonEntity lesson = lessonRepository.findById(lessonId).orElseThrow(() -> new EntityNotFoundException(""));
+        List<LessonMaterialsEntity> materials = lesson.getMaterials();
+        return materials;
     }
 }

@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -108,6 +109,9 @@ public class TestServiceImpl implements TestService {
         });
 
         testEntity.getQuestions().addAll(questions);
+        
+        testEntity.setCreationDate(LocalDateTime.now());
+        
         testEntity = testRepository.save(testEntity);
 
         return appMapper.map(testEntity);
@@ -139,6 +143,7 @@ public class TestServiceImpl implements TestService {
         });
         testEntity.getQuestions().clear();
         testEntity.getQuestions().addAll(questions);
+        
         testEntity = testRepository.save(testEntity);
 
         return appMapper.map(testEntity);
@@ -158,7 +163,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public ExamDto findByCourseId(String languageCode, Long courseId) {
+    public ExamDto findByCourseId(String languageCode, Long courseId) {////????
         List<ExamEntity> test = courseRepository.findByCourseIdAndLanguageLanguageCode(courseId, languageCode).orElseThrow(() -> new EntityNotFoundException("")).getTests();
 
         Integer number = getRandoNumberTest(test.size());
@@ -237,8 +242,8 @@ public class TestServiceImpl implements TestService {
         }).toList();
         return examQuestionTaskTexts;
     }
-
-    private ExamDto fillExamToDto(ExamEntity testEntity) {
+    
+    ExamDto fillExamToDto(ExamEntity testEntity) {
 
         ExamDto dto = new ExamDto();
 

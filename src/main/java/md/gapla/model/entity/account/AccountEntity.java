@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
+import md.gapla.model.entity.forum.ForumQuestionsEntity;
 import md.gapla.model.enums.ObjectStatusEnum;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -57,7 +58,7 @@ public class AccountEntity {
     private String password;
 
     @Column(name = "status")
-    private String status;
+    private String status;//TODO: ObjectStatusEnum
 
     @Column(name = "country")
     private String country;
@@ -86,4 +87,15 @@ public class AccountEntity {
             }
     )
     private List<AccountRoleEntity> roles = new ArrayList<>();
+    
+    @ManyToMany
+    @JoinTable(
+            name = "bookmarked_question",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "forum_question_id")
+    )
+    private List<ForumQuestionsEntity> bookmarkedQuestions = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    private List<ForumQuestionsEntity> questions = new ArrayList<>();
 }

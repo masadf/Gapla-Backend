@@ -2,6 +2,7 @@ package md.gapla.model.dto.account;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,12 +28,15 @@ public class AccountDto {
 
     private Integer gender;
 
-    private String status;
+    private String status;//TODO: change to ObjectStatusEnum
 
     private String token;
 
     private String town;
     private String country;
+    
+    private LocalDateTime lastVisit;//Needed?
+    private String avatar;//Needed?
 
     private Set<AccountRoleDto> roles = new HashSet<>();
 }
