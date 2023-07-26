@@ -1,5 +1,7 @@
 package md.gapla.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.test.TestQuestionDto;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequestMapping("api/v1/test-question")
 @AllArgsConstructor
 @CrossOrigin
+@Tag(name = "Test Question", description = "Работа с вопросами тестов")
 public class TestQuestionController {
     private final TestQuestionService testQuestionService;
 
@@ -31,9 +34,10 @@ public class TestQuestionController {
         return ResponseEntity.ok(testQuestionService.getTestQuestionList(languageCode, pageParamDto));
     }
     
-    @GetMapping(value = "/{testQuestionTypeId}")
-    public ResponseEntity<TestQuestionDto> getTestQuestion(@PathVariable("testQuestionTypeId") Long testQuestionTypeId){
-        return ResponseEntity.ok(testQuestionService.getTestQuestion(testQuestionTypeId));
+    @Operation(summary = "Получение вопроса к тесту по id вопроса.")
+    @GetMapping(value = "/{testQuestionId}")
+    public ResponseEntity<TestQuestionDto> getTestQuestion(@PathVariable("testQuestionId") Long testQuestionId){
+        return ResponseEntity.ok(testQuestionService.getTestQuestion(testQuestionId));
     }
     
     @PostMapping(value = "/{testQuestionTypeId}")

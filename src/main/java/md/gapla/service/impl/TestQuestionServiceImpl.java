@@ -179,7 +179,7 @@ public class TestQuestionServiceImpl implements TestQuestionService {
         newVariants.add(testAnswerEntity);
     }
 
-    public TestQuestionDto getTestQuestion(Long testQuestionTypeId){
-        return appMapper.map(testQuestionRepository.findById(testQuestionTypeId).orElseThrow(() -> new EntityNotFoundException("")));
+    public TestQuestionDto getTestQuestion(Long testQuestionId){
+        return appMapper.map(testQuestionRepository.findById(testQuestionId).orElseThrow(() -> new EntityNotFoundException("")));
     }
 }

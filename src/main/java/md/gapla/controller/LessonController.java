@@ -1,5 +1,7 @@
 package md.gapla.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.lessons.LessonDto;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequestMapping("api/v1/lesson")
 @AllArgsConstructor
 @CrossOrigin
+@Tag(name = "Lesson", description = "Работа с уроками")
 public class LessonController {
 
     private final LessonService lessonService;
@@ -47,7 +50,7 @@ public class LessonController {
         return ResponseEntity.ok(  lessonService.getLessonById(lessonId));
     }
     
-    //7.2
+    @Operation(summary = "Получение уроков к курсу по id курса")
     @GetMapping(value = "/courseLessons/{courseId}")
     public ResponseEntity<List<LessonEntity>> getCourseLessonsById(@PathVariable("courseId") Long courseId){
         return ResponseEntity.ok(lessonService.getLessonByCourseId(courseId));

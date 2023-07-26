@@ -1,5 +1,7 @@
 package md.gapla.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.lessons.LessonMaterialsDto;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequestMapping("api/v1/lesson-material")
 @AllArgsConstructor
 @CrossOrigin
+@Tag(name = "Lesson Materials", description = "Работа с материалами уроков")
 public class LessonMaterialsController {
 
     private final LessonMaterialsService lessonMaterialsService;
@@ -65,7 +68,8 @@ public class LessonMaterialsController {
         return ResponseEntity.ok(lessonMaterialsService.downloadLessonMaterials(documentId));
     }
     
-    @GetMapping(value = "/lessonsMaterials/{lessonId}") //7.3
+    @Operation(summary = "Получение материалов к уроку по id урока.")
+    @GetMapping(value = "/lessonsMaterials/{lessonId}")
     public ResponseEntity<List<LessonMaterialsEntity>> getLessonMaterialsListByLessonId(@PathVariable("lessonId") Long lessonId){//7.3
         return ResponseEntity.ok(lessonMaterialsService.getLessonMaterialsByLessonId(lessonId));
     }

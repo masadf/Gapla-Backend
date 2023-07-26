@@ -1,5 +1,7 @@
 package md.gapla.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.account.AccountCheckLevelDto;
@@ -22,13 +24,14 @@ import java.util.List;
 @RequestMapping("api/v1/account")
 @AllArgsConstructor
 @CrossOrigin
+@Tag(name = "Account", description = "Работа с аккаунтами")
 public class AccountController {
     private final AccountService accountService;
 
 
     //    @Operation(description = "Get all accounts from organisation", tags = {"Account"})
     @PostMapping(value = "/list")
-    public ResponseEntity<Page<AccountDto>> getAccountsList(@RequestBody PageParamDto pageParamDto) {//
+    public ResponseEntity<Page<AccountDto>> getAccountsList(@RequestBody PageParamDto pageParamDto) {
         return ResponseEntity.ok(accountService.accountsList(pageParamDto));
     }
 
@@ -75,6 +78,7 @@ public class AccountController {
         return ResponseEntity.ok(accountService.setExamResults(input));
     }
     
+    @Operation(summary = "Добавление заметки пользователю по id пользователя и id вопроса.")
     @PostMapping("/{accountId}/bookmarks/{questionId}")
     public ResponseEntity<String> addBookmarkToAccount(@PathVariable Long accountId,
                                                        @PathVariable Long questionId){
@@ -82,6 +86,7 @@ public class AccountController {
         return ResponseEntity.ok("Bookmark added successfully.");
     }
     
+    @Operation(summary = "Получение вопросов заданных пользователем.")
     @PostMapping("/{accountId}/questions")
     public ResponseEntity<List<ForumQuestionsEntity>> getQuestionsByUser(@PathVariable Long accountId){
         List<ForumQuestionsEntity> questions = accountService.getQuestionsByUser(accountId);
