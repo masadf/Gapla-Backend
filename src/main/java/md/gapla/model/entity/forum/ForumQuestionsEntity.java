@@ -44,7 +44,12 @@ public class ForumQuestionsEntity {
     @Enumerated(EnumType.STRING)
     private ObjectStatusEnum status;
     
-    @ManyToMany(mappedBy = "bookmarked_question")
+    @ManyToMany
+    @JoinTable(
+            name = "bookmarked_question",
+            joinColumns = @JoinColumn(name = "forum_question_id"),
+            inverseJoinColumns = @JoinColumn(name = "account_id")
+    )
     private List<AccountEntity> accountsBookmarked = new ArrayList<>(); //What accounts have bookmarked this question.
     
 }

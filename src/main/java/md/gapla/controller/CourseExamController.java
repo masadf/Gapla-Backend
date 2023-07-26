@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController(value = "courseExam")
 //@OpenAPIDefinition(
 //        info = @Info(title = "Users API", version = "0.0.1-SNAPSHOT"))
@@ -23,13 +25,13 @@ public class CourseExamController {
 
     private final ExamCourseService examCourseService;
 
-//    @PostMapping(value = "/page")
-//    public ResponseEntity<Page<CourseViewDto>> getCoursePage(@RequestBody PageParamDto pageParamDto) {
-//        return ResponseEntity.ok(courseService.getCoursePage(pageParamDto));
-//    }
+    @PostMapping(value = "/page")
+    public ResponseEntity<Page<ExamDto>> getCoursePage(@RequestBody PageParamDto pageParamDto) {
+        return ResponseEntity.ok(examCourseService.getExamPage(pageParamDto));
+    }
 //
 //    @PostMapping
-//    public ResponseEntity<CourseDto> addCourse(@RequestBody CourseInput input) {
+//    public ResponseEntity<CourseDto> addExam(@RequestBody CourseInput input) {
 //        return ResponseEntity.ok(courseService.addCourse(input));
 //    }
 //
@@ -40,8 +42,8 @@ public class CourseExamController {
 //    }
 
     @GetMapping(value = "/course/{courseId}")
-    public ResponseEntity<ExamDto> getCourse(@PathVariable("courseId") Long courseId) {
-        return ResponseEntity.ok(examCourseService.getRandomExamByCourseId(courseId));
+    public ResponseEntity<List<ExamDto>> getCourse(@PathVariable("courseId") Long courseId) { //get exam vars from courseID
+        return ResponseEntity.ok(examCourseService.getExamsByCourseId(courseId));
     }
 
 //    @DeleteMapping(value = "/{courseId}")
