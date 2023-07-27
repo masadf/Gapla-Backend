@@ -28,17 +28,20 @@ public class LessonController {
     public ResponseEntity<List<LessonDto>> getLessonList(@RequestBody PageParamDto pageParamDto) {
         return ResponseEntity.ok(lessonService.getLessonList(pageParamDto));
     }
-
+    
+    @Operation(summary = "Добавление урокв.")
     @PostMapping
     public ResponseEntity<LessonDto> addLessonId(@RequestBody LessonInput input) {
         return ResponseEntity.ok(lessonService.addLessonDto(input));
     }
-
+    
+    @Operation(summary = "Редактирование урока.")
     @PutMapping
     public ResponseEntity<LessonDto> updateLessonId(@RequestBody LessonInput input) {
         return ResponseEntity.ok(lessonService.updateLessonDto(input));
     }
-
+    
+    @Operation(summary = "Удаление урока.")
     @DeleteMapping(value = "/{lessonId}")
     public ResponseEntity<Void> deleteLessonById(@PathVariable("lessonId") Long lessonId) {
         lessonService.deleteLessonById(lessonId);

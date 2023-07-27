@@ -1,5 +1,7 @@
 package md.gapla.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.courseexam.ExamDto;
@@ -22,25 +24,30 @@ import java.util.List;
 @RequestMapping("api/v1/test")
 @AllArgsConstructor
 @CrossOrigin
+@Tag(name = "Test", description = "Работа с тестами.")
 public class TestController {
 
     private final TestService testService;
-
+    
+    @Operation(summary = "Получение всех тестов.")
     @PostMapping(value = "/page")
     public ResponseEntity<Page<TestDto>> getTestPage(@RequestBody PageParamDto pageParamDto) {
         return ResponseEntity.ok(testService.findTestPage(pageParamDto));
     }
-
+    
+    @Operation(summary = "Создание теста.")
     @PostMapping
     public ResponseEntity<TestDto> addTest(@RequestBody TestInput testInput) {
         return ResponseEntity.ok(testService.addTest(testInput));
     }
-
+    
+    @Operation(summary = "Редактирование теста.")
     @PutMapping
     public ResponseEntity<TestDto> updateTest(@RequestBody TestInput testInput) {
         return ResponseEntity.ok(testService.updateTest(testInput));
     }
-
+    
+    @Operation(summary = "Удаление теста по id.")
     @DeleteMapping(value = "/{testId}")
     public ResponseEntity<Void> deleteTestById(@PathVariable("testId") Long testId) {
         testService.deleteTestByTestId(testId);

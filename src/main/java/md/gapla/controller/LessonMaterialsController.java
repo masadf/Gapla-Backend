@@ -70,7 +70,7 @@ public class LessonMaterialsController {
     
     @Operation(summary = "Получение материалов к уроку по id урока.")
     @GetMapping(value = "/lessonsMaterials/{lessonId}")
-    public ResponseEntity<List<LessonMaterialsEntity>> getLessonMaterialsListByLessonId(@PathVariable("lessonId") Long lessonId){//7.3
+    public ResponseEntity<List<LessonMaterialsEntity>> getLessonMaterialsListByLessonId(@PathVariable("lessonId") Long lessonId){
         return ResponseEntity.ok(lessonMaterialsService.getLessonMaterialsByLessonId(lessonId));
     }
 }

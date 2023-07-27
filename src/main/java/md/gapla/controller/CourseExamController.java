@@ -1,5 +1,6 @@
 package md.gapla.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.course.CourseDto;
@@ -40,9 +41,9 @@ public class CourseExamController {
 //    public ResponseEntity<CourseDto> updateCourse(@RequestBody CourseInput input) {
 //        return ResponseEntity.ok(courseService.updateCourse(input));
 //    }
-
-    @GetMapping(value = "/course/{courseId}")
-    public ResponseEntity<List<ExamDto>> getCourse(@PathVariable("courseId") Long courseId) { //get exam vars from courseID
+    @Operation(summary = "Получение вариантов экзамена по id курса.")
+    @GetMapping(value = "/bycourse/{courseId}")
+    public ResponseEntity<List<ExamDto>> getCourse(@PathVariable("courseId") Long courseId) {
         return ResponseEntity.ok(examCourseService.getExamsByCourseId(courseId));
     }
 

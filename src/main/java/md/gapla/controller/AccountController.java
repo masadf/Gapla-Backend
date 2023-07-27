@@ -61,7 +61,8 @@ public class AccountController {
     public ResponseEntity<AccountDto> getMyProfile(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(accountService.getMyProfile(token));
     }
-
+    
+    @Operation(summary = "Редактирование пользователя.")
     @PutMapping(value = "/me")
     public ResponseEntity<AccountDto> updateMyAccount(@RequestHeader("Authorization") String token,
                                                       @RequestBody AccountUpdateInput input) {

@@ -1,5 +1,6 @@
 package md.gapla.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.course.CourseDto;
@@ -20,7 +21,8 @@ public class CourseController {
 
 
     private final CourseService courseService;
-
+    
+    @Operation(summary = "Получение всех курсов.")
     @PostMapping(value = "/page")
     public ResponseEntity<Page<CourseViewDto>> getCoursePage(@RequestBody PageParamDto pageParamDto) {
         return ResponseEntity.ok(courseService.getCoursePage(pageParamDto));
@@ -31,13 +33,14 @@ public class CourseController {
     public ResponseEntity<CourseDto> addCourse(@RequestBody CourseInput input) {
         return ResponseEntity.ok(courseService.addCourse(input));
     }
-
-
+    
+    @Operation(summary = "Редактирование курса.")
     @PutMapping
     public ResponseEntity<CourseDto> updateCourse(@RequestBody CourseInput input) {
         return ResponseEntity.ok(courseService.updateCourse(input));
     }
-
+    
+    @Operation(summary = "Получение курса по id.")
     @GetMapping(value = "/{courseId}")
     public ResponseEntity<CourseDto> getCourse(@PathVariable("courseId") Long courseId) {
         return ResponseEntity.ok(courseService.getCourse(courseId));
