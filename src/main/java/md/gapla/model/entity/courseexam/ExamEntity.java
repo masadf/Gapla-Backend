@@ -27,6 +27,9 @@ public class ExamEntity {
 
     @Column(name = "examname")
     private String examName;
+    
+    @Column(name = "status")
+    private ObjectStatusEnum status;
 
     @ToString.Exclude
     @Fetch(value = FetchMode.SUBSELECT)

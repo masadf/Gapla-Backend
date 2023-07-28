@@ -106,8 +106,16 @@ public interface AppMapper {
 
     AccountEntity map(AccountDto obj);
 
-
-
+    @Mapping(target = "reading", ignore = true)
+    @Mapping(target = "listening", ignore = true)
+    @Mapping(target = "tasksQuantity", expression = "java(obj.getTasks().size())")
+    ExamDto map(ExamEntity obj);
+    
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "courses", ignore = true)
+    @Mapping(target = "tasks", ignore = true)
+    ExamEntity map(ExamDto obj);
+    
     AccountRoleDto map(AccountRoleEntity obj);
 
     AccountRoleEntity map(AccountRoleDto obj);

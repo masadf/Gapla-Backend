@@ -55,5 +55,19 @@ public class ExamTaskEntity {
             }
     )
     private List<ExamTextEntity> texts = new ArrayList<>();
+    
+    @ToString.Exclude
+    @Fetch(value = FetchMode.SUBSELECT)
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "examexamtask", schema = "public",
+            joinColumns = {
+                    @JoinColumn(name = "examtaskid")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "examid")
+            }
+    )
+    private List<ExamEntity> exams = new ArrayList<>();
 
 }

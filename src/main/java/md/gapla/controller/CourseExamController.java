@@ -7,6 +7,7 @@ import md.gapla.model.dto.course.CourseDto;
 import md.gapla.model.dto.courseexam.ExamDto;
 import md.gapla.model.dto.view.CourseViewDto;
 import md.gapla.model.input.CourseInput;
+import md.gapla.model.input.ExamInput;
 import md.gapla.service.CourseService;
 import md.gapla.service.ExamCourseService;
 import org.springframework.data.domain.Page;
@@ -31,10 +32,10 @@ public class CourseExamController {
         return ResponseEntity.ok(examCourseService.getExamPage(pageParamDto));
     }
 //
-//    @PostMapping
-//    public ResponseEntity<CourseDto> addExam(@RequestBody CourseInput input) {
-//        return ResponseEntity.ok(courseService.addCourse(input));
-//    }
+    @PostMapping(value = "/add-exam")
+    public ResponseEntity<ExamDto> addExam(@RequestBody ExamInput input) {
+        return ResponseEntity.ok(examCourseService.addExam(input));
+    }
 //
 //
 //    @PutMapping

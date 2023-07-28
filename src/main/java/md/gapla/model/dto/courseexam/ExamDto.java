@@ -18,5 +18,5 @@ public class ExamDto {
     private List<ExamTaskDto> reading = new ArrayList<>();
     private List<ExamTaskDto> listening = new ArrayList<>();
     
-    private Integer questionsQuantity;
+    private Integer tasksQuantity;
 }
