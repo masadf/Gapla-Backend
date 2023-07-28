@@ -41,8 +41,9 @@ import md.gapla.model.input.CommonInfoLanguageDetailInput;
 import md.gapla.model.input.CommonInfoLanguageInput;
 import md.gapla.model.input.test.TestInput;
 import md.kobalt.security.user.JwtUserDetails;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface AppMapper {
@@ -105,14 +106,22 @@ public interface AppMapper {
     JwtUserDetails mapToDetails(AccountEntity obj);
 
     AccountEntity map(AccountDto obj);
-
-    @Mapping(target = "reading", ignore = true)
-    @Mapping(target = "listening", ignore = true)
+    
     @Mapping(target = "tasksQuantity", expression = "java(obj.getTasks().size())")
     ExamDto map(ExamEntity obj);
     
+    @AfterMapping
+    default void mapTasks(ExamEntity entity, @MappingTarget ExamDto dto) {
+        List<ExamTaskEntity> tasks = entity.getTasks();
+        for (ExamTaskEntity task : tasks) {
+            if (task.getAudioValue() != null)
+                dto.getListening().add(map(task));
+            else
+                dto.getReading().add(map(task));
+        }
+    }
+    
     @Mapping(target = "status", ignore = true)
-    @Mapping(target = "courses", ignore = true)
     @Mapping(target = "tasks", ignore = true)
     ExamEntity map(ExamDto obj);
     

@@ -1,6 +1,7 @@
 package md.gapla.model.dto.courseexam;
 
 import lombok.Data;
+import md.gapla.model.dto.course.CourseDto;
 import md.gapla.model.entity.courseexam.ExamTaskEntity;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,8 @@ public class ExamDto {
 
     private List<ExamTaskDto> reading = new ArrayList<>();
     private List<ExamTaskDto> listening = new ArrayList<>();
+    
+    private List<CourseDto> courses = new ArrayList<>();
     
     private Integer tasksQuantity;
 }

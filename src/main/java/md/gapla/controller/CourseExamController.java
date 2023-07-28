@@ -1,6 +1,7 @@
 package md.gapla.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.course.CourseDto;
@@ -22,35 +23,46 @@ import java.util.List;
 @RequestMapping("api/v1/course-exam")
 @AllArgsConstructor
 @CrossOrigin
+@Tag(name = "Exam", description = "Работа с экзаменами")
 public class CourseExamController {
 
 
     private final ExamCourseService examCourseService;
-
-    @PostMapping(value = "/page")
-    public ResponseEntity<Page<ExamDto>> getCoursePage(@RequestBody PageParamDto pageParamDto) {
-        return ResponseEntity.ok(examCourseService.getExamPage(pageParamDto));
+    
+    @Operation(summary = "Получение всех экзаменов.")
+    @GetMapping
+    public ResponseEntity<List<ExamDto>> getAll() {
+        return ResponseEntity.ok(examCourseService.getAll());
     }
-//
-    @PostMapping(value = "/add-exam")
+    
+    @Operation(summary = "Добавление экзамена.")
+    @PostMapping
     public ResponseEntity<ExamDto> addExam(@RequestBody ExamInput input) {
         return ResponseEntity.ok(examCourseService.addExam(input));
     }
-//
-//
-//    @PutMapping
-//    public ResponseEntity<CourseDto> updateCourse(@RequestBody CourseInput input) {
-//        return ResponseEntity.ok(courseService.updateCourse(input));
-//    }
+    
+    @Operation(summary = "Получение экзамена по id.")
+    @GetMapping(value="/{examId}")
+    public ResponseEntity<ExamDto> getExam(@PathVariable("examId") Long examId){
+        return ResponseEntity.ok(examCourseService.getExam(examId));
+    }
+    
+    @Operation(summary = "Редактирование экзамена.")
+    @PutMapping
+    public ResponseEntity<ExamDto> updateExam(@RequestBody ExamInput input) {
+        return ResponseEntity.ok(examCourseService.updateExam(input));
+    }
+    
     @Operation(summary = "Получение вариантов экзамена по id курса.")
     @GetMapping(value = "/bycourse/{courseId}")
-    public ResponseEntity<List<ExamDto>> getCourse(@PathVariable("courseId") Long courseId) {
+    public ResponseEntity<List<ExamDto>> getExamsByCourseId(@PathVariable("courseId") Long courseId) {
         return ResponseEntity.ok(examCourseService.getExamsByCourseId(courseId));
     }
-
-//    @DeleteMapping(value = "/{courseId}")
-//    public ResponseEntity<CourseDto> deleteCourseById(@PathVariable("courseId") Long courseId) {
-//        courseService.deleteCourseById(courseId);
-//        return ResponseEntity.ok().build();
-//    }
+    
+    @Operation(summary = "Удаление экзамена по id.")
+    @DeleteMapping(value = "/{examId}")
+    public ResponseEntity<String> deleteCourseById(@PathVariable("examId") Long examId) {
+        examCourseService.deleteExam(examId);
+        return ResponseEntity.ok("Exam was successfully deleted.");
+    }
 }

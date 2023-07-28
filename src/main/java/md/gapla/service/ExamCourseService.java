@@ -12,7 +12,6 @@ public interface ExamCourseService {
     
     List<ExamDto> getExamsByCourseId(Long courseId);
     
-    Page<ExamDto> getExamPage(PageParamDto pageParamDto);
     
     ExamDto getExam(Long examId);
     
@@ -22,7 +21,7 @@ public interface ExamCourseService {
     
     ExamDto updateExam(ExamInput input);
     
-    List<ExamEntity> findAll();
+    List<ExamDto> getAll();
     
     void deleteExam(Long examId);
 }
