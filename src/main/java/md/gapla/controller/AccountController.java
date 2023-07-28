@@ -27,7 +27,18 @@ import java.util.List;
 @Tag(name = "Account", description = "Работа с аккаунтами")
 public class AccountController {
     private final AccountService accountService;
-
+    
+    @GetMapping("/filter")
+    public ResponseEntity<List<AccountDto>> filterAccounts(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String surname,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String telephoneNumber,
+            @RequestParam(required = false) String role
+    ) {
+        List<AccountDto> filteredAccounts = accountService.filterAccounts(name, surname, email, telephoneNumber, role);
+        return ResponseEntity.ok(filteredAccounts);
+    }
 
     //    @Operation(description = "Get all accounts from organisation", tags = {"Account"})
     @PostMapping(value = "/list")

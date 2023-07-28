@@ -72,7 +72,13 @@ public class AccountServiceImpl implements AccountService {
 //    private final AccountRoleRepository accountRoleRepository;
 //    private final AccountCourseProgressRepository accountCourseProgressRepository;
 //    private final AccountCourseLessonProgressEntity accountCourseLessonProgressEntity;
-
+    
+    @Override
+    public List<AccountDto> filterAccounts(String name, String surname, String email, String telephoneNumber, String role) {
+        List<AccountEntity> filteredAccounts = accountRepository.findAccountsByFilter(name, surname, email, telephoneNumber, role);
+        return filteredAccounts.stream().map(appMapper::map).toList();
+    }
+    
     @Override
     public Page<AccountDto> accountsList(PageParamDto pageParamDto) {
         Map<String, String> params = isEmptyParams(pageParamDto.getParams());
@@ -108,7 +114,7 @@ public class AccountServiceImpl implements AccountService {
         Optional<AccountEntity> existed = finByEmail(input.getEmail());
 
         if (existed.isPresent()) {
-            throw new InvalidRequestException("");
+            throw new InvalidRequestException("Account already exists.");
         }
 
         AccountEntity accountEntity = appMapper.map(input);
@@ -120,12 +126,12 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void updateAccount(AccountDto input) {
         AccountEntity existed = accountRepository.findById(input.getAccountId())
-                .orElseThrow(() -> new EntityNotFoundException(""));
+                .orElseThrow(() -> new EntityNotFoundException("Acoount with account id = " + input.getAccountId() + " not found."));
 
         if (!input.getEmail().equals(existed.getEmail())) {
             Optional<AccountEntity> existedWIthOtherEmail = finByEmail(input.getEmail());
             if (existedWIthOtherEmail.isPresent()) {
-                throw new InvalidRequestException("");
+                throw new InvalidRequestException("Email already exists.");
             }
         }
 
@@ -144,9 +150,9 @@ public class AccountServiceImpl implements AccountService {
     public AuthenticationResponse register(RegisterExtendedRequest request) {
 
         var existedUser = accountRepository.findByEmail(request.getEmail());
-        AccountRoleEntity accountRoleEntity = accountRoleRepository.findById(3l).orElseThrow(() -> new EntityNotFoundException("Not found role"));
+        AccountRoleEntity accountRoleEntity = accountRoleRepository.findById(2l).orElseThrow(() -> new EntityNotFoundException("Not found role."));
         if (existedUser.isPresent()) {
-            throw new InvalidRequestException("");
+            throw new InvalidRequestException("Account with this email already exists.");
         }
 
         String encodedPass = passwordEncoder.encode(request.getPassword());

@@ -58,7 +58,7 @@ public class AccountEntity {
     private String password;
 
     @Column(name = "status")
-    private String status;//TODO: ObjectStatusEnum
+    private String status;
 
     @Column(name = "country")
     private String country;

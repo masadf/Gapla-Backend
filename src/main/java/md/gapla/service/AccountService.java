@@ -21,7 +21,8 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface AccountService {
-
+    
+    List<AccountDto> filterAccounts(String name, String surname, String email, String telephoneNumber, String role);
     Page<AccountDto> accountsList(PageParamDto pageParamDto);
     Page<AccountViewDto> accountsViewList(PageParamDto pageParamDto);
 
