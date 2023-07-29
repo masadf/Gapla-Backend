@@ -97,7 +97,8 @@ public class LessonMaterialsServiceImpl implements LessonMaterialsService {
 
     @Override
     public byte[] downloadLessonMaterials(Long documentId) {
-        LessonMaterialsEntity lessonMaterialsEntity = lessonMaterialsRepository.findById(documentId).orElseThrow(() -> new EntityNotFoundException(""));
+        LessonMaterialsEntity lessonMaterialsEntity = lessonMaterialsRepository.findById(documentId)
+                .orElseThrow(() -> new EntityNotFoundException("Lesson materials with id = " + documentId + " not found."));
         return s3BucketService.downloadFileFromS3(lessonMaterialsEntity.getFilePathName());
     }
 

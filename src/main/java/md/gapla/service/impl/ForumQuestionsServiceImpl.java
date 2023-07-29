@@ -25,6 +25,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +62,14 @@ public class ForumQuestionsServiceImpl implements ForumQuestionsService {
 
         List<ForumQuestionsImageEntity> images = forumQuestionsInput.getImages().stream().map(appMapper::map).toList();
         images.forEach(r -> {
+            byte[] imageBytes = Base64.getDecoder().decode(r.getValue());
+            long imageSizeInBytes = imageBytes.length;
+    
+            long maxAllowedSize = 20 * 1024 * 1024; // 20MB in bytes
+    
+            if (imageSizeInBytes > maxAllowedSize) {
+                throw new IllegalArgumentException("Image size must be between 10MB and 20MB.");
+            }
             r.setForumQuestionsId(forumQuestionId);
         });
 
