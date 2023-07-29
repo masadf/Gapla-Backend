@@ -120,7 +120,7 @@ public class TestServiceImpl implements TestService {
     @Override
     @Transactional
     public TestDto updateTest(TestInput testInput) {
-        TestEntity testEntity = testRepository.findById(testInput.getTestId()).orElseThrow(() -> new EntityNotFoundException(""));
+        TestEntity testEntity = testRepository.findById(testInput.getTestId()).orElseThrow(() -> new EntityNotFoundException("Test with id = " + testInput.getTestId() + " not found."));
         List<TestQuestionEntity> existedQuestions = testEntity.getQuestions();
         LanguageEntity languageEntity = languageRepository.findByLanguageCode(testInput.getLanguageCode()).orElseThrow(() -> new EntityNotFoundException("Not found language by language code"));
 
