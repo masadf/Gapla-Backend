@@ -8,6 +8,7 @@ import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.account.AccountDto;
 import md.gapla.model.dto.meeting.MeetingDto;
 import md.gapla.model.dto.meeting.OnlineLessonDto;
+import md.gapla.model.dto.view.MeetingExamParticipantsViewDto;
 import md.gapla.model.dto.view.MeetingParticipantViewDto;
 import md.gapla.model.dto.view.MeetingTypeViewDto;
 import md.gapla.model.dto.view.MeetingViewDto;
@@ -43,9 +44,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -79,6 +82,11 @@ public class MeetingServiceImpl implements MeetingService {
         List<MeetingViewEntity> list = meetingViewRepository.findAll(masterSpec);
 
         return list.stream().map(appMapper::map).toList();
+    }
+    
+    public List<MeetingExamParticipantsViewDto> getMeetingExamParticipantsByDate(LocalDateTime meetingDateTime){
+        List<MeetingEntity> meetings = meetingRepository.findAllByMeetingDate(meetingDateTime);
+        return meetings.stream().map(appMapper::mapToView).toList();
     }
 
     @Override
@@ -125,7 +133,7 @@ public class MeetingServiceImpl implements MeetingService {
     public void linkCurrentAccountToMeeting(String token, MeetingParticipantInput input) {
         MeetingViewEntity ll = meetingViewRepository.findByMeetingsIdAndLanguageCode(input.getMeetingsId(), "RU");
 
-        if (ll.getActiveCount() == ll.getMaxCount()) {
+        if (Objects.equals(ll.getActiveCount(), ll.getMaxCount())) {
             throw new InvalidRequestException("Max active user");
         }
         AccountEntity accountEntity = accountService.getEntityByToken(token);
@@ -156,7 +164,7 @@ public class MeetingServiceImpl implements MeetingService {
     public void linkAccountToMeeting(String token, MeetingParticipantInput input) {
         MeetingViewEntity ll = meetingViewRepository.findByMeetingsIdAndLanguageCode(input.getMeetingsId(), "RU");
 
-        if (ll.getActiveCount() == ll.getMaxCount()) {
+        if (Objects.equals(ll.getActiveCount(), ll.getMaxCount())) {
             throw new InvalidRequestException("Max active user");
         }
 
@@ -263,14 +271,13 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     private OnlineLessonDto getOnlineMeeting(MeetingEntity meetingEntity) {
-        OnlineLessonDto onlineLessonDto = appMapper.mapToOnlineLessonDto(meetingEntity);
-
-        return onlineLessonDto;
+    
+        return appMapper.mapToOnlineLessonDto(meetingEntity);
     }
 
     private MeetingEntity createOnlineMeeting(String token, OnlineLessonMeetingInput input) {
         AccountEntity currentAccount = accountService.getEntityByToken(token);
-        MeetingEntity meetingEntity = null;
+        MeetingEntity meetingEntity;
         if (input.getMeetingsId() == null) {
             meetingEntity = new MeetingEntity();
         } else {

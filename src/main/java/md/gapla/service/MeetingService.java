@@ -3,19 +3,20 @@ package md.gapla.service;
 import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.account.AccountDto;
 import md.gapla.model.dto.meeting.MeetingDto;
-import md.gapla.model.dto.view.AccountViewDto;
-import md.gapla.model.dto.view.MeetingParticipantViewDto;
-import md.gapla.model.dto.view.MeetingTypeViewDto;
-import md.gapla.model.dto.view.MeetingViewDto;
+import md.gapla.model.dto.view.*;
 import md.gapla.model.input.meeting.MeetingInput;
 import md.gapla.model.input.meeting.MeetingParticipantInput;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MeetingService {
     List<MeetingViewDto> getMeetingByAccount(PageParamDto pageParamDto);
-
+    
+    List<MeetingExamParticipantsViewDto> getMeetingExamParticipantsByDate(LocalDateTime meetingDateTime);
+    
     List<MeetingParticipantViewDto> getMeetingMyMeeting(String token, PageParamDto pageParamDto);
 
     List<MeetingTypeViewDto> getMeetingType(PageParamDto pageParamDto);

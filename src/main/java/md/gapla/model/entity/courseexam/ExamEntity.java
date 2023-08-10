@@ -30,21 +30,11 @@ public class ExamEntity {
     
     @Column(name = "status")
     private ObjectStatusEnum status;
-
+    
     @ToString.Exclude
-    @Fetch(value = FetchMode.SUBSELECT)
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "examexamtask", schema = "public",
-            joinColumns = {
-                    @JoinColumn(name = "examid")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "examtaskid")
-            }
-    )
+    @OneToMany(mappedBy = "examId", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ExamTaskEntity> tasks = new ArrayList<>();
-
+    
     @ToString.Exclude
     @Fetch(value = FetchMode.SUBSELECT)
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)

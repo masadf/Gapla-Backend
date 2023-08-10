@@ -6,9 +6,7 @@ import md.gapla.model.dto.common.*;
 import md.gapla.model.dto.course.CourseDetailsDto;
 import md.gapla.model.dto.course.CourseDto;
 import md.gapla.model.dto.course.CourseShortDto;
-import md.gapla.model.dto.courseexam.ExamDto;
-import md.gapla.model.dto.courseexam.ExamQuestionTaskTextDto;
-import md.gapla.model.dto.courseexam.ExamTaskDto;
+import md.gapla.model.dto.courseexam.*;
 import md.gapla.model.dto.forum.*;
 import md.gapla.model.dto.lessons.*;
 import md.gapla.model.dto.levellanguage.LevelLanguageDetailDto;
@@ -23,9 +21,7 @@ import md.gapla.model.entity.account.*;
 import md.gapla.model.entity.common.*;
 import md.gapla.model.entity.course.CourseDetailsEntity;
 import md.gapla.model.entity.course.CourseEntity;
-import md.gapla.model.entity.courseexam.ExamEntity;
-import md.gapla.model.entity.courseexam.ExamQuestionTaskTextEntity;
-import md.gapla.model.entity.courseexam.ExamTaskEntity;
+import md.gapla.model.entity.courseexam.*;
 import md.gapla.model.entity.forum.*;
 import md.gapla.model.entity.lessons.LessonEntity;
 import md.gapla.model.entity.lessons.LessonMaterialsEntity;
@@ -39,11 +35,14 @@ import md.gapla.model.entity.view.*;
 import md.gapla.model.enums.CommonInfoTypeEnum;
 import md.gapla.model.input.CommonInfoLanguageDetailInput;
 import md.gapla.model.input.CommonInfoLanguageInput;
+import md.gapla.model.input.ExamQuestionInput;
+import md.gapla.model.input.ExamTaskInput;
 import md.gapla.model.input.test.TestInput;
 import md.kobalt.security.user.JwtUserDetails;
 import org.mapstruct.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface AppMapper {
@@ -121,7 +120,7 @@ public interface AppMapper {
         }
     }
     
-    @Mapping(target = "status", ignore = true)
+//    @Mapping(target = "status", ignore = true)
     @Mapping(target = "tasks", ignore = true)
     ExamEntity map(ExamDto obj);
     
@@ -293,4 +292,34 @@ public interface AppMapper {
     ForumQuestionViewDto map(ForumQuestionViewEntity obj);
 
     ForumQuestionCommentsViewDto map(ForumQuestionCommentsViewEntity obj);
+    
+    ExamQuestionAnswerDto map(ExamQuestionAnswerEntity obj);
+    
+    ExamQuestionAnswerEntity map(ExamQuestionAnswerDto obj);
+	
+    @Mapping(target = "examTaskId", source = "examTaskId")
+	ExamQuestionDto map(ExamQuestionEntity obj);
+    
+    ExamQuestionEntity map(ExamQuestionDto obj);
+    
+    @Mapping(target = "variants", ignore = true)
+    ExamQuestionEntity map(ExamQuestionInput input);
+    
+    @Mapping(target = "questions", ignore = true)
+    @Mapping(target = "texts", ignore = true)
+	ExamTaskEntity map(ExamTaskInput input);
+    
+    ExamTextDto map(ExamTextEntity obj);
+    
+    ExamTextEntity map(ExamTextDto obj);
+    
+    @Mapping(target = "createdAccount", source="createdAccount.accountId")
+    @Mapping(target = "participants", source="participants")
+    MeetingExamParticipantsViewDto mapToView(MeetingEntity obj);
+    
+    default List<Long> mapParticipantsToIds(List<AccountEntity> participants) {
+        return participants.stream()
+                .map(AccountEntity::getAccountId)
+                .collect(Collectors.toList());
+    }
 }

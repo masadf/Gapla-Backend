@@ -16,4 +16,6 @@ public class ExamQuestionDto {
 
     private String questionType;
     private List<ExamQuestionAnswerDto> variants = new ArrayList<>();
+    
+    private Long examTaskId;
 }

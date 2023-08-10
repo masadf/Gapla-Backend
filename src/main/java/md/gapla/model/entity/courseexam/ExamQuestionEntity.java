@@ -26,4 +26,7 @@ public class ExamQuestionEntity {
 
     @OneToMany(mappedBy = "examQuestionId", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ExamQuestionAnswerEntity> variants = new ArrayList<>();
+    
+    @Column(name = "examtaskid")
+    private Long examTaskId;
 }

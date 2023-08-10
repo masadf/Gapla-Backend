@@ -15,4 +15,6 @@ public class ExamTextEntity {
     @Column(name = "value")
     private String value;
 
+    @Column(name = "examtaskid")
+    private Long examTaskId;
 }

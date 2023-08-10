@@ -3,6 +3,7 @@ package md.gapla.model.dto.courseexam;
 import lombok.Data;
 import md.gapla.model.dto.course.CourseDto;
 import md.gapla.model.entity.courseexam.ExamTaskEntity;
+import md.gapla.model.enums.ObjectStatusEnum;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,4 +23,6 @@ public class ExamDto {
     private List<CourseDto> courses = new ArrayList<>();
     
     private Integer tasksQuantity;
+    
+    private ObjectStatusEnum status;
 }

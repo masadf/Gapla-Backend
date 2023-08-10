@@ -27,47 +27,13 @@ public class ExamTaskEntity {
 
     @Column(name = "audiovalue")
     private String audioValue;
-
-    @ToString.Exclude
-    @Fetch(value = FetchMode.SUBSELECT)
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "examtaskexamquestion", schema = "public",
-            joinColumns = {
-                    @JoinColumn(name = "examtaskid")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "examquestionid")
-            }
-    )
+    
+    @OneToMany(mappedBy = "examTaskId", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ExamQuestionEntity> questions = new ArrayList<>();
-
-    @ToString.Exclude
-    @Fetch(value = FetchMode.SUBSELECT)
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "examtasktext", schema = "public",
-            joinColumns = {
-                    @JoinColumn(name = "examtaskid")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "examtextid")
-            }
-    )
+    
+    @OneToMany(mappedBy = "examTaskId", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ExamTextEntity> texts = new ArrayList<>();
     
-    @ToString.Exclude
-    @Fetch(value = FetchMode.SUBSELECT)
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "examexamtask", schema = "public",
-            joinColumns = {
-                    @JoinColumn(name = "examtaskid")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "examid")
-            }
-    )
-    private List<ExamEntity> exams = new ArrayList<>();
-
+    @Column(name = "examid")
+    private Long examId;
 }

@@ -22,5 +22,6 @@ public class ExamTaskDto {
     private List<ExamQuestionDto> questions = new ArrayList<>();
 
     private List<ExamTextDto> texts = new ArrayList<>();
-
+    
+    private Long examId;
 }

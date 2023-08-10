@@ -17,6 +17,9 @@ public class MeetingParticipantEntity {
 
     @Column(name = "meetingsid")
     private Long meetingsId;
+    
+    @Column(name = "permission")
+    private Boolean permission;
 
     @ManyToOne
     @JoinColumn(name = "accountid", referencedColumnName = "accountid")

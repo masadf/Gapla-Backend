@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
@@ -26,11 +27,6 @@ public class ExamCourseServiceImpl implements ExamCourseService {
 	
 	private final ExamRepository examRepository;
 	private final ExamTaskRepository examTaskRepository;
-	
-	private final ExamQuestionRepository examQuestionRepository;
-	private final ExamQuestionAnswerRepository examQuestionAnswerRepository;
-	
-	private final ExamTextRepository examTextRepository;
 	
 	private final TestServiceImpl testServiceImpl;
 	
@@ -50,9 +46,8 @@ public class ExamCourseServiceImpl implements ExamCourseService {
 	@Override
 	public ExamDto getExam(Long examId) {
 		ExamEntity entity = getExamEntity(examId);
-        ExamDto dto = appMapper.map(entity);
 		
-		return dto;
+		return appMapper.map(entity);
 	}
 	
 	@Override
@@ -62,8 +57,8 @@ public class ExamCourseServiceImpl implements ExamCourseService {
 	
 	@Override
 	public ExamDto addExam(ExamInput input) {
-        ExamEntity examEntity = examRepository.findByExamName(input.getExamName());
-        if(examEntity != null)
+        Optional<ExamEntity> examEntity = examRepository.findById(input.getExamId());
+        if(examEntity.isPresent())
             throw new InvalidRequestException("Exam with name = " + input.getExamName() + " already exists.");
 		
         ExamEntity newExamEntity = new ExamEntity();
@@ -80,7 +75,7 @@ public class ExamCourseServiceImpl implements ExamCourseService {
 		
 		newExamEntity.setStatus(ObjectStatusEnum.ENABLE);
 		
-		examRepository.save(newExamEntity);
+		newExamEntity = examRepository.save(newExamEntity);
 		
 		return appMapper.map(newExamEntity);
 	}
@@ -103,7 +98,7 @@ public class ExamCourseServiceImpl implements ExamCourseService {
 		
 		examEntity.setExamName(input.getExamName());
 		
-		examRepository.save(examEntity);
+		examEntity = examRepository.save(examEntity);
 		
 		return appMapper.map(examEntity);
 	}
