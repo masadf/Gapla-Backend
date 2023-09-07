@@ -26,7 +26,7 @@ ENV DB_PASSWORD=Wwox2287!
 ENV DB_PORT=5432
 
 # Add the application.properties file to the container
-COPY src/main/resources/application1.properties /app/application.properties
+COPY src/main/resources/application.properties /app/application.properties
 
 ENTRYPOINT exec java -Dspring.config.location=file:/app/application.properties -jar gapla.jar
 
