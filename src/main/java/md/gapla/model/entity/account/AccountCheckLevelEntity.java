@@ -56,5 +56,6 @@ public class AccountCheckLevelEntity {
             }
     )
     private List<CourseExamEntity> courseExamList = new ArrayList<>();
+//    private CourseExamEntity
 
 }

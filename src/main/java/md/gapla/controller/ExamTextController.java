@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/exam-texts")
+@RequestMapping("api/v1/exam-texts")
 @AllArgsConstructor
 @CrossOrigin
 @Tag(name = "Exam Text", description = "Работа с текстками к заданиям")

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/exam-question-answers")
+@RequestMapping("api/v1/exam-question-answers")
 @AllArgsConstructor
 @CrossOrigin
 @Tag(name = "Exam Question Answer", description = "Работа с ответами к вопросам экзаменов")

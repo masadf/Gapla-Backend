@@ -279,7 +279,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    @Transactional
+    @Transactional//Needed
     public AccountExamCheckLevelDto setExamResults(ExamResultInput input) {
         AccountEntity accountEntity = accountRepository.findByEmail(input.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("Not found user by email"));
