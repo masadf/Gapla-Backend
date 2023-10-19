@@ -130,8 +130,8 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<LessonEntity> getLessonByCourseId(Long courseId) {
-        return lessonRepository.findByCourseCourseId(courseId);
+    public List<LessonDto> getLessonByCourseId(Long courseId) {
+        return lessonRepository.findByCourseCourseId(courseId).stream().map(appMapper::map).toList();
     }
 
 

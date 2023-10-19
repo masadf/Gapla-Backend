@@ -1,9 +1,5 @@
 package md.gapla.service;
 
-//import md.gapla.model.auth.AuthenticationRequest;
-//import md.gapla.model.auth.AuthenticationResponse;
-//import md.gapla.model.auth.RegisterRequest;
-
 import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.account.AccountCheckLevelDto;
 import md.gapla.model.dto.account.AccountDto;
@@ -44,6 +40,8 @@ public interface AccountService {
     AccountExamCheckLevelDto setExamResults(ExamResultInput input);
     
     void addBookmarkToAccount(Long accountId, Long questionId);
+    void deleteBookmarkFromAccount(Long accountId, Long questionId);
+    List<Long> getBookMarksList(Long accountId);
     
     List<ForumQuestionsEntity> getQuestionsByUser(Long accountId);
     

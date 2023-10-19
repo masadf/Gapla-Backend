@@ -314,6 +314,23 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(account);
     }
     
+    @Override
+    public void deleteBookmarkFromAccount(Long accountId, Long questionId){
+        AccountEntity account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new EntityNotFoundException("Account with id = " + accountId + " not found"));
+        ForumQuestionsEntity question = forumQuestionsRepository.findById(questionId)
+                .orElseThrow(() -> new EntityNotFoundException("Question with id = " + questionId + " not found"));
+        account.getBookmarkedQuestions().remove(question);
+        accountRepository.save(account);
+    }
+    
+    @Override
+    public List<Long> getBookMarksList(Long accountId){
+        AccountEntity account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new EntityNotFoundException("Account with id = " + accountId + " not found"));
+        return account.getBookmarkedQuestions().stream().map(ForumQuestionsEntity::getForumQuestionId).toList();
+    }
+    
     
     public List<ForumQuestionsEntity> getQuestionsByUser(Long accountId) {
         AccountEntity account = accountRepository.findById(accountId)

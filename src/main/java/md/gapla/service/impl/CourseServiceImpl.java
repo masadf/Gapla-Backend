@@ -70,7 +70,7 @@ public class CourseServiceImpl implements CourseService {
     public CourseDto getCourse(Long courseId) {
         CourseEntity entity = getCourseEntity(courseId);
         CourseDto dto = appMapper.map(entity);
-        dto.setLessons(lessonService.getLessonByCourseId(courseId).stream().map(appMapper::map).toList());
+        dto.setLessons(lessonService.getLessonByCourseId(courseId));
         dto.setDetails(courseDetailsRepository.findByCourseId(dto.getCourseId()).stream().map(appMapper::map).toList());
         return dto;
     }

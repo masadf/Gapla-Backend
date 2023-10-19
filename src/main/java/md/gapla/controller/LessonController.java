@@ -55,7 +55,7 @@ public class LessonController {
     
     @Operation(summary = "Получение уроков к курсу по id курса")
     @GetMapping(value = "/courseLessons/{courseId}")
-    public ResponseEntity<List<LessonEntity>> getCourseLessonsById(@PathVariable("courseId") Long courseId){
+    public ResponseEntity<List<LessonDto>> getCourseLessonsById(@PathVariable("courseId") Long courseId){
         return ResponseEntity.ok(lessonService.getLessonByCourseId(courseId));
     }
 }

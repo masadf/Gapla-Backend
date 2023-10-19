@@ -98,6 +98,20 @@ public class AccountController {
         return ResponseEntity.ok("Bookmark added successfully.");
     }
     
+    @Operation(summary = "Удаление заметки пользователю по id пользователя и id вопроса.")
+    @DeleteMapping("/{accountId}/bookmarks/{questionId}")
+    public ResponseEntity<String> deleteBookmarkFromAccount(@PathVariable Long accountId,
+                                                       @PathVariable Long questionId){
+        accountService.deleteBookmarkFromAccount(accountId, questionId);
+        return ResponseEntity.ok("Bookmark deleted successfully.");
+    }
+    
+    @Operation(summary = "Получение всех заметки пользователя по id пользователя и id вопроса.")
+    @GetMapping("/{accountId}/bookmarks")
+    public ResponseEntity<List<Long>> getBookmarksFromAccount(@PathVariable Long accountId){
+        return ResponseEntity.ok(accountService.getBookMarksList(accountId));
+    }
+    
     @Operation(summary = "Получение вопросов заданных пользователем.")
     @PostMapping("/{accountId}/questions")
     public ResponseEntity<List<ForumQuestionsEntity>> getQuestionsByUser(@PathVariable Long accountId){

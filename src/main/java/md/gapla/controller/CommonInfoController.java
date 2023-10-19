@@ -21,18 +21,7 @@ import java.util.List;
 public class CommonInfoController {
 
     private final CommonInfoService commonInfoService;
-
-    @GetMapping(value = "/by-module/{moduleCode}")
-    public ResponseEntity<List<CommonInfoLanguageDto>> findAll(@PathVariable("moduleCode") String moduleCode, @RequestHeader("languageCode") String languageCode) {
-        return ResponseEntity.ok(commonInfoService.findByModule(moduleCode, languageCode));
-    }
-
-    @PostMapping(value = "/by-module/{moduleCode}")
-    public ResponseEntity<Page<CommonInfoLanguageDto>> findAllForPage(@PathVariable("moduleCode") String moduleCode,
-                                                                      @RequestBody PageParamDto pageParamDto) {
-        return ResponseEntity.ok(commonInfoService.findByModule(moduleCode, pageParamDto));
-    }
-
+    
     @PostMapping(value = "/list")
     public ResponseEntity<Page<CommonInfoDto>> findAll(@RequestBody PageParamDto pageParamDto, @RequestHeader("languageCode") String languageCode) {
         return ResponseEntity.ok(commonInfoService.findAll(pageParamDto, languageCode));
@@ -43,7 +32,7 @@ public class CommonInfoController {
         return ResponseEntity.ok(commonInfoService.addCommonInfo(commonInfoDto));
     }
 
-    @PutMapping(value = "/update")
+    @PutMapping(value = "/update")//TODO: Test
     public ResponseEntity<CommonInfoLanguageDto> updateCommonInfo(@RequestBody CommonInfoLanguageInput commonInfoDto) {
         return ResponseEntity.ok(commonInfoService.updateCommonInfo(commonInfoDto));
     }

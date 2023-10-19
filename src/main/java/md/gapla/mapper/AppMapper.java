@@ -155,7 +155,7 @@ public interface AppMapper {
 
     @Mapping(target = "commonInfoId", source = "commonInfo.commonInfoId")
     @Mapping(target = "commonInfoCode", source = "commonInfo.commonInfoCode")
-//    @Mapping(target = "commonInfoType", expression = "java(getCommonInfoTypeEnum(obj.getCommonInfo().getCommonInfoType().getCommonInfoType()))")
+    @Mapping(target = "commonInfoType", expression = "java(obj.getCommonInfo().getCommonInfoType().getCommonInfoType())")
     CommonInfoLanguageDto map(CommonInfoLanguageEntity obj);
 
 

@@ -9,7 +9,6 @@ import md.gapla.model.dto.common.CommonInfoLanguageDto;
 import md.gapla.model.dto.common.CommonInfoTypeLanguageDto;
 import md.gapla.model.entity.LanguageEntity;
 import md.gapla.model.entity.common.*;
-import md.gapla.model.entity.view.CommonInfoViewEntity;
 import md.gapla.model.enums.CommonInfoTypeEnum;
 import md.gapla.model.input.CommonInfoLanguageInput;
 import md.gapla.repository.LanguageRepository;
@@ -17,20 +16,14 @@ import md.gapla.repository.common.CommonInfoLanguageRepository;
 import md.gapla.repository.common.CommonInfoRepository;
 import md.gapla.repository.common.CommonInfoTypeLanguageRepository;
 import md.gapla.repository.common.CommonInfoTypeRepository;
-import md.gapla.repository.specification.filters.FilterCriteria;
-import md.gapla.repository.specification.filters.CommonInfoViewSpec;
 import md.gapla.repository.view.CommonInfoTypeViewRepository;
-import md.gapla.repository.view.CommonInfoViewRepository;
 import md.gapla.service.CommonInfoService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static md.gapla.repository.specification.CommonInfoLanguageSpec.*;
 import static md.gapla.util.ErrorMessagesUtils.COMMON_INFO_NOT_FOUND;
@@ -50,7 +43,6 @@ public class CommonInfoServiceImpl implements CommonInfoService {
     private final CommonInfoTypeRepository commonInfoTypeRepository;
 
     private final CommonInfoTypeViewRepository commonInfoTypeViewRepository;
-    private final CommonInfoViewRepository commonInfoViewRepository;
 
     @Override
     public List<CommonInfoTypeLanguageDto> findAllCommonInfoTypeByLanguageCode(String languageCode) {
@@ -59,65 +51,7 @@ public class CommonInfoServiceImpl implements CommonInfoService {
         return commonInfoTypeLanguageRepository.findByLanguageLanguageCode(languageCode).stream().map(appMapper::map).toList();
 
     }
-
-    @Override
-    @Transactional
-    public List<CommonInfoLanguageDto> findByModule(String moduleCode, String languageCode) {
-
-        Specification<CommonInfoLanguageEntity> specification = Specification
-                .where(StringUtils.hasText(languageCode) ? languageCodeEqual(languageCode) : null)
-                .and(StringUtils.hasText(moduleCode) ? commonInfoTypeEqual(CommonInfoTypeEnum.valueOf(moduleCode)) : null);
-
-        List<CommonInfoLanguageEntity> commonInfoLanguageEntities = commonInfoLanguageRepository
-                .findAll(specification);
-
-        List<CommonInfoEntity> allCommonInfoEntity = commonInfoRepository.findByCommonInfoTypeCommonInfoType(CommonInfoTypeEnum.valueOf(moduleCode).getValue());
-        LanguageEntity languageEntity = findLanguageByCode(languageCode);
-
-        List<CommonInfoLanguageDto> newlist = allCommonInfoEntity.stream().map(r -> {
-            AtomicReference<CommonInfoLanguageEntity> commonInfoLanguage = new AtomicReference<>();
-            commonInfoLanguageEntities.forEach(t -> {
-                if (t.getCommonInfo().getCommonInfoType().getCommonInfoType().equals(r.getCommonInfoType().getCommonInfoType()) &&
-                        t.getCommonInfo().getCommonInfoCode().equals(r.getCommonInfoCode())) {
-                    commonInfoLanguage.set(t);
-                }
-
-            });
-            if (commonInfoLanguage.get() == null) {
-                CommonInfoLanguageEntity commonInfoLanguageEntity = new CommonInfoLanguageEntity();
-                commonInfoLanguageEntity.setCommonInfo(r);
-                commonInfoLanguageEntity.setLanguage(languageEntity);
-                commonInfoLanguage.set(commonInfoLanguageEntity);
-            }
-            return commonInfoLanguage.get();
-        }).map(appMapper::map).toList();
-
-        return newlist;
-    }
-
-    @Override
-    public Page<CommonInfoLanguageDto> findByModule(String moduleCode, PageParamDto pageParamDto) {
-        Map<String, String> params = pageParamDto.getParams();
-
-        Specification<CommonInfoViewEntity> masterSpec = null;
-        for (FilterCriteria filterCriteria : pageParamDto.getCriteria()) {
-            masterSpec = Specification.where(masterSpec).and(new CommonInfoViewSpec(filterCriteria));
-        }
-        Page<CommonInfoViewEntity> pages=commonInfoViewRepository.findAll(masterSpec,pageParamDto.getPageRequest());
-
-        String languageCode = params.get("languageCode");
-        String commonInfoCode = params.get("commonInfoCode");
-
-        Specification<CommonInfoLanguageEntity> specification = Specification
-                .where(StringUtils.hasText(languageCode) ? languageCodeEqual(languageCode) : null)
-                .and(StringUtils.hasText(commonInfoCode) ? likeCommonInfoCode(commonInfoCode.toUpperCase()) : null)
-                .and(StringUtils.hasText(moduleCode) ? commonInfoTypeEqual(CommonInfoTypeEnum.valueOf(moduleCode)) : null);
-
-        Page<CommonInfoLanguageEntity> list = commonInfoLanguageRepository.findAll(specification, pageParamDto.getPageRequest());
-
-        return list.map(appMapper::map);
-    }
-
+    
     @Override
     @Transactional
     public Page<CommonInfoDto> findAll(PageParamDto pageParamDto, String languageCode) {

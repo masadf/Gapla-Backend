@@ -35,6 +35,9 @@ public class LessonEntity {
 
     @Column(name = "lessontext")
     private String lessonText;
+    
+    @Column(name = "videolink")
+    private String videoLink;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

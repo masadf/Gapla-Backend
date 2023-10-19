@@ -13,6 +13,7 @@ public class LessonDto {
     private String lessonName;
     private String lessonText;
     private CourseShortDto course;
+    private String videoLink;
 
     private List<TestQuestionDto> questions = new ArrayList<>();
 

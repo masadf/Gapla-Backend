@@ -13,11 +13,7 @@ import java.util.List;
 public interface CommonInfoService {
 
     List<CommonInfoTypeLanguageDto> findAllCommonInfoTypeByLanguageCode(String languageCode);
-
-    List<CommonInfoLanguageDto> findByModule(String moduleCode, String languageCode);
-
-    Page<CommonInfoLanguageDto> findByModule(String moduleCode, PageParamDto pageParamDto);
-
+    
     Page<CommonInfoDto> findAll(PageParamDto pageParamDto, String languageCode);
 
     CommonInfoLanguageDto updateCommonInfo(CommonInfoLanguageInput commonInfoDto);

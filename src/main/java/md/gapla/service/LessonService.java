@@ -17,5 +17,5 @@ public interface LessonService {
     LessonDto updateLessonDto(LessonInput input);
     void  deleteLessonById(Long lessonId);
     LessonDto  getLessonById(Long lessonId);
-    List<LessonEntity> getLessonByCourseId(Long courseId);
+    List<LessonDto> getLessonByCourseId(Long courseId);
 }
