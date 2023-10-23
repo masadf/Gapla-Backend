@@ -281,8 +281,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional//Needed
     public AccountExamCheckLevelDto setExamResults(ExamResultInput input) {
-        AccountEntity accountEntity = accountRepository.findByEmail(input.getEmail())
-                .orElseThrow(() -> new EntityNotFoundException("Not found user by email"));
+        AccountEntity accountEntity = accountRepository.findById(input.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("Not found user by id."));
 
         AccountCheckLevelEntity accountCheckLevelEntity = new AccountCheckLevelEntity();
 
@@ -329,6 +329,10 @@ public class AccountServiceImpl implements AccountService {
         AccountEntity account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new EntityNotFoundException("Account with id = " + accountId + " not found"));
         return account.getBookmarkedQuestions().stream().map(ForumQuestionsEntity::getForumQuestionId).toList();
+    }
+    
+    public List<Long> getDiplomaList(Long accountId){
+        return accountCheckLevelRepository.findAccountCheckLevelIdsByAccountId(accountId);
     }
     
     

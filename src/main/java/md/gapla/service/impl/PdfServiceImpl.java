@@ -23,11 +23,11 @@ public class PdfServiceImpl implements PdfService {
 	private final ExamRepository examRepository;
 	
 	@Override
-	public byte[] getPdf(String email) {
-		AccountEntity account = accountRepository.findByEmail(email)
-				.orElseThrow(() -> new EntityNotFoundException("Account with email = " + email + " not found."));
-		AccountCheckLevelEntity accountCheckLevelEntity = accountCheckLevelRepository.findById(account.getAccountId())
-				.orElseThrow(() -> new EntityNotFoundException("AccountLevel with id = " + account.getAccountId() + " not found."));
+	public byte[] getPdf(Long checkLevelId) {
+		AccountCheckLevelEntity accountCheckLevelEntity = accountCheckLevelRepository.findById(checkLevelId)
+				.orElseThrow(() -> new EntityNotFoundException("AccountLevel with id = " + checkLevelId + " not found."));
+		AccountEntity account = accountRepository.findById(accountCheckLevelEntity.getAccountId())
+				.orElseThrow(() -> new EntityNotFoundException("Account with id = " + accountCheckLevelEntity.getAccountId() + " not found."));
 		
 		Integer result = accountCheckLevelEntity.getTotal().intValue();
 		

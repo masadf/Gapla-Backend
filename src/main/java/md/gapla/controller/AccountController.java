@@ -108,7 +108,7 @@ public class AccountController {
     
     @Operation(summary = "Получение всех заметки пользователя по id пользователя и id вопроса.")
     @GetMapping("/{accountId}/bookmarks")
-    public ResponseEntity<List<Long>> getBookmarksFromAccount(@PathVariable Long accountId){
+    public ResponseEntity<List<Long>> getBookmarksForAccount(@PathVariable Long accountId){
         return ResponseEntity.ok(accountService.getBookMarksList(accountId));
     }
     
@@ -117,5 +117,11 @@ public class AccountController {
     public ResponseEntity<List<ForumQuestionsEntity>> getQuestionsByUser(@PathVariable Long accountId){
         List<ForumQuestionsEntity> questions = accountService.getQuestionsByUser(accountId);
         return ResponseEntity.ok(questions);
+    }
+    
+    @Operation(summary = "Получение всех дипломов пользователя по id пользователя.")
+    @GetMapping("/{accountId}/diplomas")
+    public ResponseEntity<List<Long>> getDiplomaListForAccount(@PathVariable Long accountId){
+        return ResponseEntity.ok(accountService.getDiplomaList(accountId));
     }
 }

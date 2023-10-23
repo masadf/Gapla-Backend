@@ -44,5 +44,6 @@ public interface AccountService {
     List<Long> getBookMarksList(Long accountId);
     
     List<ForumQuestionsEntity> getQuestionsByUser(Long accountId);
-    
-    }
+	
+	List<Long> getDiplomaList(Long accountId);
+}

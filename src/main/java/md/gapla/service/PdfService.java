@@ -1,5 +1,5 @@
 package md.gapla.service;
 
 public interface PdfService {
-	byte[] getPdf(String username);
+	byte[] getPdf(Long checkLevelId);
 }

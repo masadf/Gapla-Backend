@@ -7,7 +7,7 @@ public class ExamResultInput {
     private Long courseId;
     private Long examId;
 
-    private String  email;
+    private Long userId;
 
     private Double reading;
     private Double listening;

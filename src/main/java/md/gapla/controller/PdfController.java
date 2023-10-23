@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PdfController {
 	private final PdfService pdfService;
 	
-	@Operation(summary = "Получение pdf сертификата по username.")
+	@Operation(summary = "Получение pdf сертификата по id сертификата.")
 	@PostMapping
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Получи",
@@ -31,13 +31,13 @@ public class PdfController {
 			@ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
 					content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
 	})
-	public ResponseEntity<byte[]> getPdf(@RequestBody String username) {
+	public ResponseEntity<byte[]> getPdf(@RequestBody Long checkLevelId) {
 		
-		byte[] contents = pdfService.getPdf(username);
+		byte[] contents = pdfService.getPdf(checkLevelId);
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_PDF);
-		String filename = username + ".pdf";
+		String filename = "diploma.pdf";
 		headers.setContentDispositionFormData(filename, filename);
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 		
