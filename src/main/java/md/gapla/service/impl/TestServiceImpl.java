@@ -231,6 +231,7 @@ public class TestServiceImpl implements TestService {
         TestContentDto testContentDto = new TestContentDto();
         if (testEntity.getTestText() != null)
             testContentDto.setTestText(testEntity.getTestText().getValue());
+        testContentDto.setStatus(testEntity.getStatus().getValue());
         testContentDto.setTestId(testEntity.getTestId());
         testContentDto.setReading(filterQuestionByType(1L, testEntity.getQuestions()).stream().map(appMapper::map).toList());
         testContentDto.setListening(filterQuestionByType(2L, testEntity.getQuestions()).stream().map(appMapper::map).toList());

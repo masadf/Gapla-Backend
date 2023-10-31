@@ -11,6 +11,8 @@ import java.util.Set;
 public class TestContentDto {
     private Long testId;
 
+    private String status;
+    
     private String testName;
 
     private String testText;
