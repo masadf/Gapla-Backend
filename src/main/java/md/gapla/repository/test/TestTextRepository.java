@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TestTextRepository extends JpaRepository<TestTextEntity, Long> {
+	TestTextEntity findByValue(String value);
 }

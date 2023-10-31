@@ -129,11 +129,17 @@ public class TestServiceImpl implements TestService {
         List<TestQuestionEntity> questions = new ArrayList<>();
         List<TestQuestionEntity> deletedQuestions = new ArrayList<>();
 
-        TestTextEntity testText = testEntity.getTestText();
-        if (testText != null)
-            testText = testTextRepository.save(testText);
-        testEntity.setTestText(testText);
-
+        String testText1 = testInput.getTestText();
+        if (testText1 != null){
+            if (testTextRepository.findByValue(testText1) == null) {
+                TestTextEntity newText = new TestTextEntity();
+                newText.setValue(testText1);
+                testEntity.setTestText(testTextRepository.save(newText));
+            } else {
+                TestTextEntity newText = testTextRepository.findByValue(testText1);
+                testEntity.setTestText(newText);
+            }
+        }
 
         testInput.getQuestions().forEach(r -> {
 
