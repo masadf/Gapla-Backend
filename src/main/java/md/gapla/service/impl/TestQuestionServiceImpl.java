@@ -46,7 +46,9 @@ public class TestQuestionServiceImpl implements TestQuestionService {
     public TestQuestionDto addTestQuestion(Long testQuestionTypeId, TestQuestionInput testQuestionInput) {
         TestQuestionEntity testQuestionEntity = new TestQuestionEntity();
         TestQuestionTypeLanguageEntity testQuestionTypeLanguage = testQuestionTypeLanguageRepository.findByTestQuestionTypeTestQuestionTypeIdAndLanguageLanguageCode(testQuestionTypeId, testQuestionInput.getLanguageCode());
-
+    
+        testQuestionEntity.setStatus(ObjectStatusEnum.ENABLE); //It wasn't here
+        
         if (testQuestionTypeLanguage == null) {
             throw new EntityNotFoundException("");
         }
