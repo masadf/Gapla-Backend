@@ -20,7 +20,7 @@ public class AccountCourserController {
     private final AccountCourseService accountCourseService;
 
     @PostMapping(value = "/progress")
-    public ResponseEntity<List<AccountCourseDto>> getAccountsList(@RequestHeader("Authorization") String token,
+    public ResponseEntity<List<AccountCourseDto>> getAccountsList(@RequestHeader("AuthorizationToken") String token,
                                                                   @RequestBody PageParamDto pageParamDto) {
         return ResponseEntity.ok(accountCourseService.getCourseByAccount(token, pageParamDto));
     }

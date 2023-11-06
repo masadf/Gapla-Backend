@@ -69,13 +69,13 @@ public class AccountController {
     }
 
     @GetMapping(value = "/me")
-    public ResponseEntity<AccountDto> getMyProfile(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<AccountDto> getMyProfile(@RequestHeader("AuthorizationToken") String token) {
         return ResponseEntity.ok(accountService.getMyProfile(token));
     }
     
     @Operation(summary = "Редактирование пользователя.")
     @PutMapping(value = "/me")
-    public ResponseEntity<AccountDto> updateMyAccount(@RequestHeader("Authorization") String token,
+    public ResponseEntity<AccountDto> updateMyAccount(@RequestHeader("AuthorizationToken") String token,
                                                       @RequestBody AccountUpdateInput input) {
         return ResponseEntity.ok(accountService.updateMyAccount(input, token));
     }

@@ -43,13 +43,13 @@ public class MeetingController {
     }
     
     @PostMapping(value = "/list/my")
-    public ResponseEntity<List<MeetingParticipantViewDto>> getMyMeeting(@RequestHeader("Authorization") String token,
+    public ResponseEntity<List<MeetingParticipantViewDto>> getMyMeeting(@RequestHeader("AuthorizationToken") String token,
                                                                         @RequestBody PageParamDto pageParamDto) {
         return ResponseEntity.ok(meetingService.getMeetingMyMeeting(token, pageParamDto));
     }
     
     @PostMapping(value = "/link")
-    public ResponseEntity<Void> linkCurrentAccountToMeeting(@RequestHeader("Authorization") String token,
+    public ResponseEntity<Void> linkCurrentAccountToMeeting(@RequestHeader("AuthorizationToken") String token,
                                                             @RequestBody MeetingParticipantInput input) {
         meetingService.linkCurrentAccountToMeeting(token, input);
         
@@ -57,7 +57,7 @@ public class MeetingController {
     }
     
     @PostMapping(value = "/teach/link")
-    public ResponseEntity<Void> linkAccountToMeeting(@RequestHeader("Authorization") String token,
+    public ResponseEntity<Void> linkAccountToMeeting(@RequestHeader("AuthorizationToken") String token,
                                                      @RequestBody MeetingParticipantInput input) {
         meetingService.linkAccountToMeeting(token, input);
         
@@ -65,7 +65,7 @@ public class MeetingController {
     }
     
     @PostMapping(value = "/teach/unlink")
-    public ResponseEntity<Void> unlinkAccountToMeeting(@RequestHeader("Authorization") String token,
+    public ResponseEntity<Void> unlinkAccountToMeeting(@RequestHeader("AuthorizationToken") String token,
                                                        @RequestBody MeetingParticipantInput input) {
         meetingService.unlinkAccountToMeeting(token, input);
         
@@ -73,13 +73,13 @@ public class MeetingController {
     }
     
     @PostMapping(value = "/lesson-online/add")
-    public ResponseEntity<MeetingViewDto> createMeeting(@RequestHeader("Authorization") String token, @RequestBody OnlineLessonMeetingInput input) {
+    public ResponseEntity<MeetingViewDto> createMeeting(@RequestHeader("AuthorizationToken") String token, @RequestBody OnlineLessonMeetingInput input) {
         MeetingViewDto meetingViewDto = meetingService.createMeeting(token, input);
         return ResponseEntity.ok(meetingViewDto);
     }
     
     @PutMapping(value = "/lesson-online/update")
-    public ResponseEntity<MeetingViewDto> updateMeeting(@RequestHeader("Authorization") String token, @RequestBody OnlineLessonMeetingInput input) {
+    public ResponseEntity<MeetingViewDto> updateMeeting(@RequestHeader("AuthorizationToken") String token, @RequestBody OnlineLessonMeetingInput input) {
         return ResponseEntity.ok(meetingService.createMeeting(token, input));
     }
     
