@@ -150,7 +150,7 @@ public class AccountServiceImpl implements AccountService {
     public AuthenticationResponse register(RegisterExtendedRequest request) {
 
         var existedUser = accountRepository.findByEmail(request.getEmail());
-        AccountRoleEntity accountRoleEntity = accountRoleRepository.findById(2l).orElseThrow(() -> new EntityNotFoundException("Not found role."));
+        AccountRoleEntity accountRoleEntity = accountRoleRepository.findById(3l).orElseThrow(() -> new EntityNotFoundException("Not found role."));
         if (existedUser.isPresent()) {
             throw new InvalidRequestException("Account with this email already exists.");
         }

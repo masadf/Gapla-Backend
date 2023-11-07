@@ -5,12 +5,15 @@ import md.gapla.exception.EntityNotFoundException;
 import md.gapla.mapper.AppMapper;
 import md.gapla.model.dto.PageParamDto;
 import md.gapla.model.dto.lessons.LessonDto;
+import md.gapla.model.dto.lessons.LessonMaterialsDto;
 import md.gapla.model.entity.course.CourseEntity;
 import md.gapla.model.entity.lessons.LessonEntity;
+import md.gapla.model.entity.lessons.LessonMaterialsEntity;
 import md.gapla.model.entity.test.TestQuestionEntity;
 import md.gapla.model.enums.ObjectStatusEnum;
 import md.gapla.model.input.lesson.LessonInput;
 import md.gapla.repository.course.CourseRepository;
+import md.gapla.repository.lesson.LessonMaterialsRepository;
 import md.gapla.repository.lesson.LessonRepository;
 import md.gapla.repository.test.TestQuestionRepository;
 import md.gapla.service.LessonService;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static md.gapla.repository.specification.LessonSpec.courseIdEqual;
 
@@ -37,6 +41,8 @@ public class LessonServiceImpl implements LessonService {
     private final CourseRepository courseRepository;
 
     private final TestQuestionRepository testQuestionRepository;
+    
+    private final LessonMaterialsRepository lessonMaterialsRepository;
 
 
     @Override
@@ -81,39 +87,40 @@ public class LessonServiceImpl implements LessonService {
 
         return appMapper.map(lesson);
     }
-
+    
     @Override
     public LessonDto updateLessonDto(LessonInput input) {
-        LessonEntity lesson = lessonRepository.findById(input.getLessonId()).orElseThrow(() -> new EntityNotFoundException(""));
-
-        List<Long> questions = input.getQuestions();
-        List<TestQuestionEntity> questionsExisted = lesson.getQuestions();
-        List<TestQuestionEntity> newQuestions = new ArrayList<>();
-        List<TestQuestionEntity> forDeleting = new ArrayList<>();
-
+        LessonEntity lesson = lessonRepository.findById(input.getLessonId())
+                .orElseThrow(() -> new EntityNotFoundException("Lesson not found"));
+        
+        // Update the basic fields
+        lesson.setLessonName(input.getLessonName());
+        lesson.setLessonText(input.getLessonText());
+        lesson.setVideoLink(input.getVideoLink());
+        
         CourseEntity course = findByCourseId(input.getCourseId());
         lesson.setCourse(course);
-
-        questions.forEach(r -> {
-            TestQuestionEntity testQuestionEntity = findByTestQuestionId(r);
-            newQuestions.add(testQuestionEntity);
-        });
-
-//        questionsExisted.forEach(r ->
-//        {
-//            Optional<TestQuestionEntity> existingDetail = getExistingQuestionsFromList(r, newQuestions);
-//            if (existingDetail.isEmpty()) {
-//                forDeleting.add(r);
-//            }
-//        });
-        lesson.getQuestions().clear();
-        lesson.getQuestions().addAll(newQuestions);
-
+        
+        // Update the questions associated with the lesson
+        List<Long> questionIds = input.getQuestions();
+        List<TestQuestionEntity> newQuestions = questionIds.stream()
+                .map(this::findByTestQuestionId)
+                .collect(Collectors.toList());
+        lesson.setQuestions(newQuestions);
+        
+        // Update the materials associated with the lesson
+        List<Long> materialIds = input.getMaterials();
+        List<LessonMaterialsEntity> newMaterials = materialIds.stream()
+                .map(this::findByLessonMaterialId)
+                .collect(Collectors.toList());
+        lesson.setMaterials(newMaterials);
+        
+        // Save the updated lesson
         lesson = lessonRepository.save(lesson);
-
-
+        
         return appMapper.map(lesson);
     }
+
 
     @Override
     public void deleteLessonById(Long lessonId) {
@@ -141,6 +148,10 @@ public class LessonServiceImpl implements LessonService {
 
     private TestQuestionEntity findByTestQuestionId(Long testQuestionId) {
         return testQuestionRepository.findById(testQuestionId).orElseThrow(() -> new EntityNotFoundException(""));
+    }
+    
+    private LessonMaterialsEntity findByLessonMaterialId(Long lessonMaterialId) {
+        return lessonMaterialsRepository.findById(lessonMaterialId).orElseThrow(() -> new EntityNotFoundException(""));
     }
 
     private Optional<TestQuestionEntity> getExistingQuestionsFromList(TestQuestionEntity dto, List<TestQuestionEntity> list) {
