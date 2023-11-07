@@ -1,5 +1,6 @@
 package md.gapla.service.impl;
 
+import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import md.gapla.exception.EntityNotFoundException;
 import md.gapla.mapper.AppMapper;
@@ -22,10 +23,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static md.gapla.repository.specification.LessonSpec.courseIdEqual;
@@ -65,26 +63,34 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public LessonDto addLessonDto(LessonInput input) {
+        if(lessonRepository.findById(input.getLessonId()).isPresent())
+            throw new EntityExistsException("Lesson already exists.");
         LessonEntity lesson = new LessonEntity();
-        CourseEntity course = findByCourseId(input.getCourseId());
-
         lesson.setStatus(ObjectStatusEnum.ENABLE);
+    
+        // Update the basic fields
+        lesson.setLessonName(input.getLessonName());
+        lesson.setLessonText(input.getLessonText());
+        lesson.setVideoLink(input.getVideoLink());
+        
+        CourseEntity course = findByCourseId(input.getCourseId());
         lesson.setCourse(course);
-
+    
+        // Update the questions associated with the lesson
+        List<Long> questionIds = input.getQuestions();
+        List<TestQuestionEntity> newQuestions = questionIds.stream()
+                .map(this::findByTestQuestionId)
+                .collect(Collectors.toList());
+        lesson.setQuestions(newQuestions);
+    
+        // Update the materials associated with the lesson
+        List<Long> materialIds = input.getMaterials();
+        List<LessonMaterialsEntity> newMaterials = materialIds.stream()
+                .map(this::findByLessonMaterialId)
+                .collect(Collectors.toList());
+        lesson.setMaterials(newMaterials);
+        
         lesson = lessonRepository.save(lesson);
-        if (!input.getQuestions().isEmpty()) {
-            List<TestQuestionEntity> questions = new ArrayList<>();
-            input.getQuestions().forEach(r -> {
-
-                TestQuestionEntity testQuestionEntity = findByTestQuestionId(r);
-                questions.add(testQuestionEntity);
-            });
-
-            lesson.getQuestions().addAll(questions);
-            lesson = lessonRepository.save(lesson);
-        }
-
-
         return appMapper.map(lesson);
     }
     
@@ -152,13 +158,6 @@ public class LessonServiceImpl implements LessonService {
     
     private LessonMaterialsEntity findByLessonMaterialId(Long lessonMaterialId) {
         return lessonMaterialsRepository.findById(lessonMaterialId).orElseThrow(() -> new EntityNotFoundException(""));
-    }
-
-    private Optional<TestQuestionEntity> getExistingQuestionsFromList(TestQuestionEntity dto, List<TestQuestionEntity> list) {
-        return list.stream()
-                .filter(testQuestion -> dto.getTestQuestionId() != null
-                        && testQuestion.getTestQuestionId() == dto.getTestQuestionId())
-                .findFirst();
     }
 
 }
