@@ -2,6 +2,7 @@ package md.gapla.model.dto.course;
 
 import lombok.Data;
 import md.gapla.model.dto.LanguageDto;
+import md.gapla.model.dto.courseexam.ExamDto;
 import md.gapla.model.dto.lessons.LessonDto;
 import md.gapla.model.dto.levellanguage.LevelLanguageDto;
 import md.gapla.model.entity.lessons.LessonEntity;
@@ -20,6 +21,6 @@ public class CourseDto {
     private LanguageDto language;
     private ObjectStatusEnum status;
     private List<LessonDto> lessons;
-    private List<CourseDetailsDto> details;
-    private List<Long> tests = new ArrayList<>();
+//    private List<CourseDetailsDto> details;
+    private List<ExamDto> tests = new ArrayList<>();
 }

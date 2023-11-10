@@ -1,8 +1,6 @@
 package md.gapla.model.input;
 
 import lombok.Data;
-import md.gapla.model.dto.LanguageDto;
-import md.gapla.model.dto.levellanguage.LevelLanguageDto;
 import md.gapla.model.enums.ObjectStatusEnum;
 
 import java.util.List;
@@ -17,6 +15,7 @@ public class CourseInput {
     private String languageCode;
 
     private ObjectStatusEnum status;
+    private List<Long> lessons;
 
     private List<Long> tests;
 }
